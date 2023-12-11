@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animated Perspective Grid Demo</title>
+
+    <style>
+      * {
+        margin: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      html,
+      html.light {
+        color-scheme: only light;
+
+        --foreground: rgb(255 255 255);
+        --right: #f8cde8;
+        --left: #b9ddff;
+      }
+      html.dark {
+        color-scheme: only dark;
+
+        --foreground: rgb(0 0 0);
+        --right: #4c2638;
+        --left: #223b67;
+      }
+      @media (prefers-color-scheme: dark) {
+        html {
+          color-scheme: only dark;
+
+          --foreground: rgb(0 0 0);
+          --right: #4c2638;
+          --left: #223b67;
+        }
+      }
+
+      body {
+        position: relative;
+      }
+
+      .container {
+        background-color: var(--foreground);
+        position: absolute;
+        z-index: -6;
+        overflow: hidden;
+        inset: 0;
+        perspective: 500px !important;
+        transition: perspective 3s ease 0s;
+      }
+
+      .overlay {
+        position: absolute;
+        z-index: 100;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0) 0px,
+          var(--foreground) 50%
+        );
+      }
+
+      .grid-container {
+        transform: rotateX(75deg);
+        position: absolute;
+        inset: 0px;
+      }
+
+      .lines {
+        position: absolute;
+        width: 200vw;
+        margin-left: -50%;
+        transform: translateY(0);
+        background-image: linear-gradient(
+          to right,
+          var(--left) 45%,
+          rgba(0, 0, 0, 0) 50%,
+          var(--right) 55%
+        );
+        mask-image: linear-gradient(
+            to right,
+            rgba(0, 0, 0, 1) 2px,
+            rgba(0, 0, 0, 0) 1px
+          ),
+          linear-gradient(to bottom, rgba(0, 0, 0, 1) 2px, rgba(0, 0, 0, 0) 1px);
+
+        /* Adjust this if you need more lines */
+        mask-size: 60px 60px;
+        overflow: hidden;
+        mask-repeat: repeat repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        inset: -100% 0px;
+        background-position-y: 100%;
+        mask-position: 50% 0px;
+        animation: goUp 60s linear infinite;
+      }
+
+      @media (min-width: 1024px) {
+        .lines {
+          animation-duration: 30s;
+
+          /* Adjust this if you need more lines */
+          mask-size: 70px 70px;
+        }
+      }
+
+      @keyframes goUp {
+        0% {
+          transform: translateY(0);
+        }
+
+        100% {
+          transform: translateY(calc(50% + 28px));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="overlay"></div>
+      <div class="grid-container">
+        <div class="lines"></div>
+      </div>
+    </div>
+  </body>
+</html>
